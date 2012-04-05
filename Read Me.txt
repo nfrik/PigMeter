@@ -1,0 +1,34 @@
+Lucas Kanade Optical Flow for the iPhone
+========================================
+1.0
+
+Lucas Kanade (LK) Optical Flow is an algorithm developed by Bruce D. Lucas and Takeo Kanade for Optical Flow estimation. There an example lkdemo app that comes with OpenCV which inspired and supplied the core code for this app.
+
+More on Lucas Kanade Optical Flow - http://en.wikipedia.org/wiki/Lucas–Kanade_Optical_Flow_Method
+
+
+The algorithm was ported to the iPhone by Success Software Solutions' Labs team. We used OpenCV's sample lkdemo application, and threw in some gui and video capabilities.
+
+More on Success Labs - http://labs.success-ware.com
+
+
+Please note that this is version 1.0 with several improvements still due. Generally 
+these deal with:
+* better visualization code in terms of FPS
+* better frame extracting code for even more FPS
+* some drawing eye-candy like drawing lines between close points, and such.
+* Share on Facebook ;-)
+
+we will discuss these in further detail in our forums:
+http://www.hatzlaha.co.il/site/detail/forum/forum.asp?forum_id=19952&depart_id=150842
+
+
+Enjoy and feel free to use. It would be kind to mention us if you do, but as you wish.
+
+For comments and questions either try the forums mentioned above, or our contact form:
+http://www.success-ware.com/150842/Contact%2DUs
+
+We'd love to hear from you!
+
+-- Success Labs --
+    -- 2011 --
