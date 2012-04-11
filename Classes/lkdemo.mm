@@ -87,7 +87,7 @@ CvPoint2D32f* processLKFrame(IplImage* frame,
 		
 	// Copy the given frame
 	cvCopy( frame, grey, 0 );
-
+ 
 	if( need_to_init )
 	{
 		/* automatic initialization */
