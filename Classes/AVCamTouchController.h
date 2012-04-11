@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "lkdemo.h"
 #import <UIKit/UIKit.h>
 
 @interface AVCamTouchController : UIView{

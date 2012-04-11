@@ -17,7 +17,7 @@ void fivepointmidpoint(CvPoint2D32f * input, CvPoint2D32f * output, int size){
     output[0].y=0;
     output[1].y=0;
     output[size-2].y=0;
-    output[size-1].y=0;    
+    output[size-1].y=0;
     
     for(int i=2;i<=size-3;i++){
         h=(input[i].x-input[i-1].x);
@@ -67,8 +67,8 @@ void pixtoangle(CvPoint3D32f * points1, CvPoint3D32f * points2, CvPoint2D32f * a
     //float aw,ah;
     for(int i=0;i<size;i++){
         //angles[i]=2*atan(angles(k)/640*tan(0.98476/2));
-//        ah=2*atan(fabs(points1[i].x-points2[i].x)/320*tan(0.98476/2.0));
-//        aw=2*atan(fabs(points1[i].y-points2[i].y)/210*tan(0.75398/2.0));
+//        ah=2*atan(fabs(points1[i].x-points2[i].x)/320*tan((55.7/180*M_PI)/2.0));
+//        aw=2*atan(fabs(points1[i].y-points2[i].y)/210*tan((36.8/180*M_PI)/2.0));
 //        anglesout[i].y=sqrt(pow(aw,2)+pow(ah,2));
         anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2)+pow(points2[i].y-points1[i].y,2))/320*tan((55.7/180*M_PI)/2.0));
         anglesout[i].x=points1[i].z;
@@ -109,7 +109,7 @@ int locatezeroeswithtolerance(CvPoint2D32f * input, int * xzeroes, float epsilon
 float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size){
     float f=0;
     for(int i=0;i<=size;i++){
-        f+=fabs(input[xzeroes[i]].y);
+        //f+=fabs(input[xzeroes[i]].y);
         NSLog(@"i = %d, size = %d, f= %f",i,size,f);
     }
     return f/size;

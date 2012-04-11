@@ -9,8 +9,8 @@
 #ifndef LucasKanadeV1_derivatives_h
 #define LucasKanadeV1_derivatives_h
 
-#include "cv.h"
-#include "highgui.h"
+//#include "cv.h"
+//#include "highgui.h"
 #include <stdio.h>
 #include <ctype.h>
 

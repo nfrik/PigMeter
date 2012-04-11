@@ -7,12 +7,13 @@
  
  *****************************************************************************/
 
+#import "Kalman.h"
+#include "lkdemo.h"
 #import "AVCamViewDelegate.h"
 #import <Foundation/Foundation.h>
 #import <CoreMotion/CoreMotion.h>
 #import <AVFoundation/AVFoundation.h>
 #include <OpenGLES/ES1/glext.h>
-#include "lkdemo.h"
 									 
 @interface MyVideoBuffer : NSObject <AVCaptureVideoDataOutputSampleBufferDelegate>{
 
@@ -36,7 +37,11 @@
     CvPoint2D32f* dalphaPoints;
     CvPoint2D32f* ddalphaPoints;
     CvPoint3D32f* accelerationPoints;
-    CvPoint2D32f* distancePoints;    
+    CvPoint2D32f* distancePoints;  
+    CvPoint2D32f* kalmanPoints1; //points for kalman filtering
+    CvPoint2D32f* kalmanPoints2; //points for kalman filtering
+    CvPoint2D32f* kalmanPoints3; //points for kalman filtering
+    CvPoint2D32f* kalmanPoints4; //points for kalman filtering    
              int* xzeroesarr;
     double        programStartTime;
     NSMutableString* OutData;

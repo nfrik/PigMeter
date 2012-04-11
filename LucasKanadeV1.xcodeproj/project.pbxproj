@@ -27,6 +27,10 @@
 		84D1EA0512C8E2E700BFA12F /* MyVideoBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84D1EA0412C8E2E700BFA12F /* MyVideoBuffer.mm */; };
 		84FD431812D9FB6700AE20E8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84FD431612D9FB6700AE20E8 /* Default.png */; };
 		84FD431912D9FB6700AE20E8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84FD431712D9FB6700AE20E8 /* Default@2x.png */; };
+		C364083415321950005513BD /* Kalman.mm in Sources */ = {isa = PBXBuildFile; fileRef = C364083315321950005513BD /* Kalman.mm */; };
+		C364087815326DF6005513BD /* OpenCV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C364087715326DF6005513BD /* OpenCV.framework */; };
+		C364087A15326E8C005513BD /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C364087915326E8C005513BD /* libz.dylib */; };
+		C364087C153276C5005513BD /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C364087B153276C5005513BD /* ImageIO.framework */; };
 		C39268D515253E0000FA489F /* AVCamTouchController.mm in Sources */ = {isa = PBXBuildFile; fileRef = C39268D415253E0000FA489F /* AVCamTouchController.mm */; };
 		C3F63F7215280FA80072DA7E /* derivatives.mm in Sources */ = {isa = PBXBuildFile; fileRef = C3F63F7115280FA80072DA7E /* derivatives.mm */; };
 		C3F63F7D15281BF60072DA7E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3F63F7C15281BF60072DA7E /* CoreMotion.framework */; };
@@ -77,6 +81,11 @@
 		84FD431612D9FB6700AE20E8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		84FD431712D9FB6700AE20E8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LucasKanadeV1-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LucasKanadeV1-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		C364083315321950005513BD /* Kalman.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Kalman.mm; sourceTree = "<group>"; };
+		C364084B1532243F005513BD /* Kalman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kalman.h; sourceTree = "<group>"; };
+		C364087715326DF6005513BD /* OpenCV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenCV.framework; sourceTree = "<group>"; };
+		C364087915326E8C005513BD /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		C364087B153276C5005513BD /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		C39268D315253E0000FA489F /* AVCamTouchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVCamTouchController.h; sourceTree = "<group>"; };
 		C39268D415253E0000FA489F /* AVCamTouchController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AVCamTouchController.mm; sourceTree = "<group>"; };
 		C3F63F7115280FA80072DA7E /* derivatives.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = derivatives.mm; sourceTree = "<group>"; };
@@ -104,18 +113,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3F63F7D15281BF60072DA7E /* CoreMotion.framework in Frameworks */,
-				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
-				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
-				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
-				E99F56421162B5660020042D /* AVFoundation.framework in Frameworks */,
 				E99F56571162BA130020042D /* QuartzCore.framework in Frameworks */,
-				E942F1DE1165049400F16C8C /* MediaPlayer.framework in Frameworks */,
+				84D1E75112C86EBA00BFA12F /* OpenGLES.framework in Frameworks */,
 				E9ECAEA61166C91E00937DFB /* CoreMedia.framework in Frameworks */,
 				E9ECAFC81166CB6600937DFB /* CoreVideo.framework in Frameworks */,
+				C3F63F7D15281BF60072DA7E /* CoreMotion.framework in Frameworks */,
+				E99F56421162B5660020042D /* AVFoundation.framework in Frameworks */,
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				C364087C153276C5005513BD /* ImageIO.framework in Frameworks */,
+				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				E942F1DE1165049400F16C8C /* MediaPlayer.framework in Frameworks */,
 				E94DFFBE116FE043009B726B /* MobileCoreServices.framework in Frameworks */,
 				E9F5BF5C117E5C5100442489 /* AssetsLibrary.framework in Frameworks */,
-				84D1E75112C86EBA00BFA12F /* OpenGLES.framework in Frameworks */,
+				C364087815326DF6005513BD /* OpenCV.framework in Frameworks */,
+				C364087A15326E8C005513BD /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +170,9 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				C364087B153276C5005513BD /* ImageIO.framework */,
+				C364087915326E8C005513BD /* libz.dylib */,
+				C364087715326DF6005513BD /* OpenCV.framework */,
 				C3F63F7C15281BF60072DA7E /* CoreMotion.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -225,6 +240,8 @@
 				84D1E6DF12C7A10000BFA12F /* ESRenderer.h */,
 				C3F63F7415280FC40072DA7E /* derivatives.h */,
 				C3F63F7115280FA80072DA7E /* derivatives.mm */,
+				C364084B1532243F005513BD /* Kalman.h */,
+				C364083315321950005513BD /* Kalman.mm */,
 			);
 			name = OpenGL;
 			sourceTree = "<group>";
@@ -314,6 +331,7 @@
 				84ADFABB12DBD820009EB652 /* lkdemo.mm in Sources */,
 				C39268D515253E0000FA489F /* AVCamTouchController.mm in Sources */,
 				C3F63F7215280FA80072DA7E /* derivatives.mm in Sources */,
+				C364083415321950005513BD /* Kalman.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,14 +342,37 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/framework/Source/**\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LucasKanadeV1_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
 				INFOPLIST_FILE = "LucasKanadeV1-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/externalLibs/opencv/lib/Debug";
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-lz",
+				);
+				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
+					"-lstdc++",
+					"-lz",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
+					"-lstdc++",
+					"-lz",
+				);
 				PRODUCT_NAME = LucasKanadeV1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				SDKROOT = iphoneos;
@@ -342,13 +383,36 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/framework/Source/**\"",
+				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LucasKanadeV1_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
 				INFOPLIST_FILE = "LucasKanadeV1-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/externalLibs/opencv/lib/Release";
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-lz",
+				);
+				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
+					"-lstdc++",
+					"-lz",
+				);
+				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
+					"-lstdc++",
+					"-lz",
+				);
 				PRODUCT_NAME = LucasKanadeV1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				SDKROOT = iphoneos;
@@ -359,36 +423,65 @@
 		84D1924712310919007337B8 /* AppStore Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/framework/Source/**\"",
+				);
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "$(SRCROOT)/opencv_device/include/**";
-				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "$(SRCROOT)/opencv_simulator/include/**";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
+				);
 				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
-					"-lstdc++",
-					"-lz",
-					"$(SRCROOT)/opencv_device/lib/libcv.a",
-					"$(SRCROOT)/opencv_device/lib/libcxcore.a",
-					"$(SRCROOT)/opencv_device/lib/libcvaux.a",
-					"$(SRCROOT)/opencv_device/lib/libhighgui.a",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
 				);
 				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
-					"-lstdc++",
-					"-lz",
-					"$(SRCROOT)/opencv_simulator/lib/libcv.a",
-					"$(SRCROOT)/opencv_simulator/lib/libcxcore.a",
-					"$(SRCROOT)/opencv_simulator/lib/libcvaux.a",
-					"$(SRCROOT)/opencv_simulator/lib/libhighgui.a",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
 				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				SDKROOT = iphoneos;
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = "AppStore Distribution";
 		};
@@ -396,13 +489,28 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/framework/Source/**\"",
+				);
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LucasKanadeV1_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
 				INFOPLIST_FILE = "LucasKanadeV1-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/externalLibs/opencv/lib/Debug";
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-lz",
+				);
 				PRODUCT_NAME = LucasKanadeV1;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				SDKROOT = iphoneos;
@@ -413,75 +521,134 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/framework/Source/**\"",
+				);
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "$(SRCROOT)/opencv_device/include/**";
-				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "$(SRCROOT)/opencv_simulator/include/**";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/externalLibs/opencv/lib/Debug";
+				OTHER_LDFLAGS = (
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
+				);
 				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
-					"-lstdc++",
-					"-lz",
-					"$(SRCROOT)/opencv_device/lib/libcv.a",
-					"$(SRCROOT)/opencv_device/lib/libcxcore.a",
-					"$(SRCROOT)/opencv_device/lib/libcvaux.a",
-					"$(SRCROOT)/opencv_device/lib/libhighgui.a",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
 				);
 				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
-					"-lstdc++",
-					"-lz",
-					"$(SRCROOT)/opencv_simulator/lib/libcv.a",
-					"$(SRCROOT)/opencv_simulator/lib/libcxcore.a",
-					"$(SRCROOT)/opencv_simulator/lib/libcvaux.a",
-					"$(SRCROOT)/opencv_simulator/lib/libhighgui.a",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
 				);
 				PROVISIONING_PROFILE = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				SDKROOT = iphoneos;
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Lisa Taylor (7FC66HP7L6)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/framework/Source/**\"",
+				);
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "$(SRCROOT)/opencv_device/include/**";
-				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "$(SRCROOT)/opencv_simulator/include/**";
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = "\"$(SRCROOT)/framework/**\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/externalLibs/opencv/lib/Release";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
+				);
 				"OTHER_LDFLAGS[sdk=iphoneos*][arch=*]" = (
-					"-lstdc++",
-					"-lz",
-					"$(SRCROOT)/opencv_device/lib/libcv.a",
-					"$(SRCROOT)/opencv_device/lib/libcxcore.a",
-					"$(SRCROOT)/opencv_device/lib/libcvaux.a",
-					"$(SRCROOT)/opencv_device/lib/libhighgui.a",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
 				);
 				"OTHER_LDFLAGS[sdk=iphonesimulator*][arch=*]" = (
-					"-lstdc++",
-					"-lz",
-					"$(SRCROOT)/opencv_simulator/lib/libcv.a",
-					"$(SRCROOT)/opencv_simulator/lib/libcxcore.a",
-					"$(SRCROOT)/opencv_simulator/lib/libcvaux.a",
-					"$(SRCROOT)/opencv_simulator/lib/libhighgui.a",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-lopencv_core",
+					"-lopencv_features2d",
+					"-lopencv_flann",
+					"-lopencv_imgproc",
+					"-lopencv_legacy",
+					"-lopencv_ml",
+					"-lopencv_objdetect",
+					"-lopencv_video",
+					"-lzlib",
 				);
 				PROVISIONING_PROFILE = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5B1ED371-E804-4C2E-9406-F2F9A9AEC2DF";
 				SDKROOT = iphoneos;
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
 		};

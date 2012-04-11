@@ -7,7 +7,6 @@
 //
 
 #import "AVCamTouchController.h"
-#import "lkdemo.h"
 
 #define MAX_POINT_NUMBER 2
 

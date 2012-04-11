@@ -6,8 +6,9 @@
 //  Copyright 2010 __MyCompanyName__. All rights reserved.
 //
 
-#include "cv.h"
-#include "highgui.h"
+//#include "cv.h"
+//#include "highgui.h"
+//#include <opencv2/opencv.hpp>
 #include <stdio.h>
 #include <ctype.h>
 
