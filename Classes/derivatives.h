@@ -39,6 +39,9 @@ int locatezeroeswithtolerance(CvPoint2D32f * input, int * xzeroes, float epsilon
 //average on selected points
 float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size);
 
+//average on selected points with kalman filtering
+float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size);
+
 //getting average of an array
 float average(CvPoint2D32f * input, int which, int size);
 

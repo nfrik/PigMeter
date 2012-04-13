@@ -109,7 +109,7 @@ int locatezeroeswithtolerance(CvPoint2D32f * input, int * xzeroes, float epsilon
 float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size){
     float f=0;
     for(int i=0;i<=size;i++){
-        //f+=fabs(input[xzeroes[i]].y);
+        f+=fabs(input[xzeroes[i]].y);
         NSLog(@"i = %d, size = %d, f= %f",i,size,f);
     }
     return f/size;

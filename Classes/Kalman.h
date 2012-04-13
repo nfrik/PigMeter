@@ -17,6 +17,8 @@
 
 void kftest();
 
+void kalman1d(float *input, float *output, float procNoise, float measNoise, int size);
 void kalman2d(CvPoint2D32f *input, CvPoint2D32f *output, float procNoise, float measNoise, int size);
+void kalman3d(CvPoint3D32f *input, CvPoint3D32f *output, float procNoise, float measNoise, int size);
 
 #endif

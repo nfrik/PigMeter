@@ -15,7 +15,7 @@
 #import "AVCamViewController.h"
 #import "derivatives.h"
 
-#define MAX_POINTS 100
+#define MAX_POINTS 250
 
 @implementation MyVideoBuffer
 
@@ -59,8 +59,10 @@
         alphaPoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
         dalphaPoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));        
         ddalphaPoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));                
-        accelerationPoints = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));     
+        accelerationPoints = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));  
+        kfaccelerationPoints = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));  
         distancePoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));              
+        kfdistancePoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));              
         xzeroesarr = (int*)malloc(MAX_POINTS*sizeof(int));
         kalmanPoints1 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
         kalmanPoints2 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
@@ -322,14 +324,14 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
 	endTime = [[NSDate date] timeIntervalSince1970];
     
     
-// -----------Implement Kalman Filter-----------------    
+// -----------Measure acceleration-----------------    
 // ---------------------------------------------------    
     
     //kftest();
     //accelerometer data taken at endTime
-    accelerationPoints[pointCounter].x=motionManager.deviceMotion.userAcceleration.x*9.81;
-    accelerationPoints[pointCounter].y=motionManager.deviceMotion.userAcceleration.y*9.81;
-    accelerationPoints[pointCounter].z=motionManager.deviceMotion.userAcceleration.z*9.81;      
+    accelerationPoints[pointCounter].x=motionManager.deviceMotion.userAcceleration.x*9.80665;
+    accelerationPoints[pointCounter].y=motionManager.deviceMotion.userAcceleration.y*9.80665;
+    accelerationPoints[pointCounter].z=motionManager.deviceMotion.userAcceleration.z*9.80665;
 	//stop taking accelerometer data
     
 // ---------------------------------------------------
@@ -403,7 +405,7 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
 	glEnable(GL_TEXTURE_2D);
 	
 	glVertexPointer(2, GL_FLOAT, 0, spriteVertices);
-	glTexCoordPointer(2, GL_FLOAT, 0, spriteTexcoords);	
+	glTexCoordPointer(2, GL_FLOAT, 0, spriteTexcoords);
 	
 	
 	// Bind the texture if Show Camera is on
@@ -457,52 +459,76 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
     cartesianPoints[1][pointCounter].y = points[1].y;
     cartesianPoints[0][pointCounter].z = (endTime-programStartTime)*1000;
     cartesianPoints[1][pointCounter].z = (endTime-programStartTime)*1000;
-    
+
     pointCounter++;
     if (pointCounter>=MAX_POINTS) {
         pointCounter=0;        
         pixtoangle(cartesianPoints[0], cartesianPoints[1], alphaPoints, MAX_POINTS);        
         fivepointmidpoint(alphaPoints, dalphaPoints, MAX_POINTS);
         fivepointmidpointdd(alphaPoints, ddalphaPoints, MAX_POINTS);
-        kalman2d(alphaPoints, kalmanPoints1, 1e-4, 1e-3, MAX_POINTS);
-        kalman2d(dalphaPoints, kalmanPoints2, 1e-4, 1e-3, MAX_POINTS);        
-        kalman2d(ddalphaPoints, kalmanPoints3, 1e-4, 1e-3, MAX_POINTS);        
+        kalman2d(alphaPoints, kalmanPoints1, 1e-4, 1e-4, MAX_POINTS);
+        kalman2d(dalphaPoints, kalmanPoints2, 1e-3, 1e-3, MAX_POINTS);
+        kalman2d(ddalphaPoints, kalmanPoints3, 1e-2, 1e-2, MAX_POINTS);
+        kalman3d(accelerationPoints, kfaccelerationPoints, 1e-2, 1e-2, MAX_POINTS);
         inertialpixeltransform(alphaPoints, dalphaPoints, ddalphaPoints, accelerationPoints, distancePoints, MAX_POINTS);
+        inertialpixeltransform(kalmanPoints1, kalmanPoints2, kalmanPoints3, kfaccelerationPoints, kfdistancePoints, MAX_POINTS);        
+        //locate zeroes
         int numofzeroes=locatezeroeswithtolerance(dalphaPoints, xzeroesarr, 0.02, MAX_POINTS);
         
-        
-        //give some output if there is actual zeroes
-        if ((numofzeroes>0)&&(numofzeroes<MAX_POINTS)) {
+     //output if there are actual zeroes
+     if ((numofzeroes>0)&&(numofzeroes<MAX_POINTS)) {
             
-        float avRealDistance = averageforpoints(distancePoints, xzeroesarr, numofzeroes);
-            
-        delegate.infoLabel.text=[NSString stringWithFormat:@"Distance = %3.2f m, n = %d, a=%f",avRealDistance, numofzeroes, accelerationPoints[0].z];            
-            
+        float avRealDistance = averageforpoints(distancePoints, xzeroesarr, numofzeroes);            
+        float kfavRealDistance = averageforpoints(kfdistancePoints, xzeroesarr, numofzeroes);    
+
+        delegate.infoLabel.text=[NSString stringWithFormat:@"RD=%3.2fm, KFD=%3.2fm, n=%d, a=%f",avRealDistance, kfavRealDistance,numofzeroes, accelerationPoints[0].z];            
+         
+         
         //prepare file                
-        for(int i=0;i<MAX_POINTS;i++){
-            [OutData appendFormat:@"%f  %f  %f  %f  %f  %f  %f \r",alphaPoints[i].y,dalphaPoints[i].y,ddalphaPoints[i].y,kalmanPoints1[i].y,kalmanPoints2[i].y,kalmanPoints3[i].y,distancePoints[i].x];
+//        for(int i=0;i<MAX_POINTS;i++){
+//            [OutData appendFormat:@"%f  %f  %f  %f  %f  %f  %f  %f  %f\r",alphaPoints[i].y,dalphaPoints[i].y,ddalphaPoints[i].y,kalmanPoints1[i].y,kalmanPoints2[i].y,kalmanPoints3[i].y,accelerationPoints[i].z,kfaccelerationPoints[i].z,distancePoints[i].x];
+//        }
+//            //save file
+//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
+//            if([paths count] > 0){
+//                NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"adaddakfadkfaddkfaacckfacc.txt"];
+//                [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+//                [OutData setString:@""];//clean all array and start with 0 length
+//                //delegate.infoLabel.text = @"file is ready!";            
+//            }       
+         
+         
+         // -----------Implement Kalman Filter-----------------    
+         // ---------------------------------------------------    
+         float *kalmanZeroPointsInput = (float*)cvAlloc(numofzeroes*sizeof(float));
+         float *kalmanZeroPointsOutput = (float*)cvAlloc(numofzeroes*sizeof(float));                 
+         
+         for(int i=0;i<numofzeroes;i++){
+             kalmanZeroPointsInput[i]=distancePoints[xzeroesarr[i]].y;
+         }         
+         
+         kalman1d(kalmanZeroPointsInput, kalmanZeroPointsOutput, 1e-4, 1e-1, numofzeroes);
+                  
+         
+        //prepare file
+        for(int i=0;i<numofzeroes;i++){
+            [OutData appendFormat:@"%f %f %f %f %f %f %f \r",alphaPoints[xzeroesarr[i]].y,dalphaPoints[xzeroesarr[i]].y,ddalphaPoints[xzeroesarr[i]].y,distancePoints[xzeroesarr[i]].y,kfdistancePoints[xzeroesarr[i]].y, kalmanZeroPointsOutput[i],distancePoints[xzeroesarr[i]].x];
         }
-            //save file
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
-            if([paths count] > 0){
-                NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"datoutkal.txt"];
-                [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-                [OutData setString:@""];//clean all array and start with 0 length
-                //delegate.infoLabel.text = @"file is ready!";            
-            }            
+         
+         cvFree(&kalmanZeroPointsInput);
+         cvFree(&kalmanZeroPointsOutput);
+         //---------------------------------------------------         
+         //---------------------------------------------------         
+         
             
-//        for(int i=0;i<numofzeroes;i++){
-//            [OutData appendFormat:@"%f  %f  %f %f %f \r",alphaPoints[xzeroesarr[i]].y,dalphaPoints[xzeroesarr[i]].y,ddalphaPoints[xzeroesarr[i]].y,distancePoints[xzeroesarr[i]].y,distancePoints[xzeroesarr[i]].x];
-//        }
-//            
-//        //save file
-//        //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
-//        if([paths count] > 0){
-//            NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"zerdatout.txt"];
-//            [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-//            [OutData setString:@""];//clean all array and start with 0 length
-//            //delegate.infoLabel.text = @"file is ready!";            
-//        }
+        //save file
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
+        if([paths count] > 0){
+            NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"kfzerdatout12.txt"];
+            [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            [OutData setString:@""];//clean all array and start with 0 length
+            //delegate.infoLabel.text = @"file is ready!";            
+        }
         }// if numofzeroes > 0
     }
     //end my code
@@ -604,7 +630,9 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
     cvFree(&dalphaPoints);
     cvFree(&ddalphaPoints);
     cvFree(&accelerationPoints);
+    cvFree(&kfaccelerationPoints);    
     cvFree(&distancePoints);
+    cvFree(&kfdistancePoints);    
     free(&xzeroesarr);
     cvFree(&kalmanPoints1);
     cvFree(&kalmanPoints2);

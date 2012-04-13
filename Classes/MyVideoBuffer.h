@@ -37,7 +37,9 @@
     CvPoint2D32f* dalphaPoints;
     CvPoint2D32f* ddalphaPoints;
     CvPoint3D32f* accelerationPoints;
+    CvPoint3D32f* kfaccelerationPoints;    //kalman acceleration points
     CvPoint2D32f* distancePoints;  
+    CvPoint2D32f* kfdistancePoints;      
     CvPoint2D32f* kalmanPoints1; //points for kalman filtering
     CvPoint2D32f* kalmanPoints2; //points for kalman filtering
     CvPoint2D32f* kalmanPoints3; //points for kalman filtering
