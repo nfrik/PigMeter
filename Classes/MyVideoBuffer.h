@@ -44,6 +44,7 @@
     CvPoint2D32f* kalmanPoints2; //points for kalman filtering
     CvPoint2D32f* kalmanPoints3; //points for kalman filtering
     CvPoint2D32f* kalmanPoints4; //points for kalman filtering    
+    float         heightLastValue1; //we save last value to make smooth kalman prediction from last frame
              int* xzeroesarr;
     double        programStartTime;
     NSMutableString* OutData;

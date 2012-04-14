@@ -122,7 +122,7 @@ const CGFloat hudBorderWidth = 1.f;
 	// Initialize parameters
 	self.downSampleFactorParam	= 2;
 	self.lkWinSizeParam			= 12;
-	self.lkLevelParam			= 3;
+	self.lkLevelParam			= 5;
 	self.lkMaxPointsParam		= 50;
 	self.showCameraParam		= YES;
 	self.displayMethod			= 0;
@@ -437,6 +437,12 @@ const CGFloat hudBorderWidth = 1.f;
 		case 3:
 			self.lkLevelParam = 3;
             break;
+		case 4:
+			self.lkLevelParam = 4;
+            break;
+		case 5:
+			self.lkLevelParam = 5;
+            break;            
     }
 	
 	need_to_init = 1;
@@ -661,8 +667,8 @@ const CGFloat hudBorderWidth = 1.f;
 		if (expandyButton == nil) {
 			ExpandyButton *lkLevel =  [[ExpandyButton alloc] initWithPoint:CGPointMake(8.f, 8.f + (40.f * count))
 																	   title:@"Level"
-																 buttonNames:[NSArray arrayWithObjects:@"0", @"1", @"2", @"3", nil]
-																selectedItem:3];
+																 buttonNames:[NSArray arrayWithObjects:@"0", @"1", @"2", @"3", @"4", @"5", nil]
+																selectedItem:5];
 			[lkLevel addTarget:self action:@selector(lkLevelChange:) forControlEvents:UIControlEventValueChanged];
 			[view addSubview:lkLevel];
 			[self setLkLevel:lkLevel];

@@ -64,14 +64,16 @@ void threepointmidpointdd(CvPoint2D32f * input, CvPoint2D32f * output, int size)
 
 //converts pixel distance btw two points to angle distance btw 2 points
 void pixtoangle(CvPoint3D32f * points1, CvPoint3D32f * points2, CvPoint2D32f * anglesout, int size){
-    //float aw,ah;
+    float aw,ah;
     for(int i=0;i<size;i++){
-        //angles[i]=2*atan(angles(k)/640*tan(0.98476/2));
-//        ah=2*atan(fabs(points1[i].x-points2[i].x)/320*tan((55.7/180*M_PI)/2.0));
-//        aw=2*atan(fabs(points1[i].y-points2[i].y)/210*tan((36.8/180*M_PI)/2.0));
-//        anglesout[i].y=sqrt(pow(aw,2)+pow(ah,2));
-        anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2)+pow(points2[i].y-points1[i].y,2))/320*tan((55.7/180*M_PI)/2.0));
-        anglesout[i].x=points1[i].z;
+        ah = atanf(sqrt(pow(points2[i].x-points1[i].x,2))/320*tan((53.13/180*M_PI)/2.0));
+        aw = atanf(sqrt(pow(points2[i].y-points1[i].y,2))/215*tan((36.8/180*M_PI)/2.0));        
+//        anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2)+pow(points2[i].y-points1[i].y,2))/320*tan((55.7/180*M_PI)/2.0));
+          anglesout[i].y = 2*atanf(sqrtf(powf(ah, 2)+powf(aw, 2)));
+          anglesout[i].x = points1[i].z;
+//        anglesout[i].y = aw;
+//        anglesout[i].x = ah;
+        
     }
 }
 
@@ -108,7 +110,7 @@ int locatezeroeswithtolerance(CvPoint2D32f * input, int * xzeroes, float epsilon
 //average for selected points
 float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size){
     float f=0;
-    for(int i=0;i<=size;i++){
+    for(int i=0;i<size;i++){
         f+=fabs(input[xzeroes[i]].y);
         NSLog(@"i = %d, size = %d, f= %f",i,size,f);
     }
