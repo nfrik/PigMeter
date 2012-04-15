@@ -27,6 +27,12 @@
 		84D1EA0512C8E2E700BFA12F /* MyVideoBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 84D1EA0412C8E2E700BFA12F /* MyVideoBuffer.mm */; };
 		84FD431812D9FB6700AE20E8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 84FD431612D9FB6700AE20E8 /* Default.png */; };
 		84FD431912D9FB6700AE20E8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84FD431712D9FB6700AE20E8 /* Default@2x.png */; };
+		8D8CA2BC1539F2D4007AEF64 /* HomeController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8D8CA2BA1539F2D4007AEF64 /* HomeController.mm */; };
+		8D8CA2BD1539F2D4007AEF64 /* HomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D8CA2BB1539F2D4007AEF64 /* HomeController.xib */; };
+		8D8CA2CB153A3D8B007AEF64 /* TutorialController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D8CA2C9153A3D8A007AEF64 /* TutorialController.m */; };
+		8D8CA2CC153A3D8B007AEF64 /* TutorialController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8D8CA2CA153A3D8B007AEF64 /* TutorialController.xib */; };
+		8D8CA2CE153A3E69007AEF64 /* Pig.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D8CA2CD153A3E69007AEF64 /* Pig.png */; };
+		8D8CA2D0153A7BCD007AEF64 /* pointing_finger.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D8CA2CF153A7BCD007AEF64 /* pointing_finger.png */; };
 		C364083415321950005513BD /* Kalman.mm in Sources */ = {isa = PBXBuildFile; fileRef = C364083315321950005513BD /* Kalman.mm */; };
 		C364087815326DF6005513BD /* OpenCV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C364087715326DF6005513BD /* OpenCV.framework */; };
 		C364087A15326E8C005513BD /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C364087915326E8C005513BD /* libz.dylib */; };
@@ -81,6 +87,14 @@
 		84FD431612D9FB6700AE20E8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		84FD431712D9FB6700AE20E8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LucasKanadeV1-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LucasKanadeV1-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		8D8CA2B91539F2D4007AEF64 /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
+		8D8CA2BA1539F2D4007AEF64 /* HomeController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HomeController.mm; sourceTree = "<group>"; };
+		8D8CA2BB1539F2D4007AEF64 /* HomeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeController.xib; sourceTree = "<group>"; };
+		8D8CA2C8153A3D8A007AEF64 /* TutorialController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialController.h; sourceTree = "<group>"; };
+		8D8CA2C9153A3D8A007AEF64 /* TutorialController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialController.m; sourceTree = "<group>"; };
+		8D8CA2CA153A3D8B007AEF64 /* TutorialController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TutorialController.xib; sourceTree = "<group>"; };
+		8D8CA2CD153A3E69007AEF64 /* Pig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Pig.png; sourceTree = "<group>"; };
+		8D8CA2CF153A7BCD007AEF64 /* pointing_finger.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pointing_finger.png; sourceTree = "<group>"; };
 		C364083315321950005513BD /* Kalman.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Kalman.mm; sourceTree = "<group>"; };
 		C364084B1532243F005513BD /* Kalman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Kalman.h; sourceTree = "<group>"; };
 		C364087715326DF6005513BD /* OpenCV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = OpenCV.framework; sourceTree = "<group>"; };
@@ -155,6 +169,12 @@
 				84ADFABA12DBD820009EB652 /* lkdemo.mm */,
 				C39268D315253E0000FA489F /* AVCamTouchController.h */,
 				C39268D415253E0000FA489F /* AVCamTouchController.mm */,
+				8D8CA2B91539F2D4007AEF64 /* HomeController.h */,
+				8D8CA2BA1539F2D4007AEF64 /* HomeController.mm */,
+				8D8CA2BB1539F2D4007AEF64 /* HomeController.xib */,
+				8D8CA2C8153A3D8A007AEF64 /* TutorialController.h */,
+				8D8CA2C9153A3D8A007AEF64 /* TutorialController.m */,
+				8D8CA2CA153A3D8B007AEF64 /* TutorialController.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -195,6 +215,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8D8CA2CF153A7BCD007AEF64 /* pointing_finger.png */,
+				8D8CA2CD153A3E69007AEF64 /* Pig.png */,
 				847916F7133B8CFB000EC3A2 /* carmove.png */,
 				84FD431612D9FB6700AE20E8 /* Default.png */,
 				84FD431712D9FB6700AE20E8 /* Default@2x.png */,
@@ -308,6 +330,10 @@
 				84FD431812D9FB6700AE20E8 /* Default.png in Resources */,
 				84FD431912D9FB6700AE20E8 /* Default@2x.png in Resources */,
 				847916F8133B8CFB000EC3A2 /* carmove.png in Resources */,
+				8D8CA2BD1539F2D4007AEF64 /* HomeController.xib in Resources */,
+				8D8CA2CC153A3D8B007AEF64 /* TutorialController.xib in Resources */,
+				8D8CA2CE153A3E69007AEF64 /* Pig.png in Resources */,
+				8D8CA2D0153A7BCD007AEF64 /* pointing_finger.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +358,8 @@
 				C39268D515253E0000FA489F /* AVCamTouchController.mm in Sources */,
 				C3F63F7215280FA80072DA7E /* derivatives.mm in Sources */,
 				C364083415321950005513BD /* Kalman.mm in Sources */,
+				8D8CA2BC1539F2D4007AEF64 /* HomeController.mm in Sources */,
+				8D8CA2CB153A3D8B007AEF64 /* TutorialController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

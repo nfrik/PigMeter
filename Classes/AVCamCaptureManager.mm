@@ -38,7 +38,7 @@
 @end
 
 @implementation AVCamCaptureManager
-
+@synthesize  usingBackFacingCamera;
 @synthesize session = _session;
 @synthesize orientation = _orientation;
 @dynamic audioChannel;

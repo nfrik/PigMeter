@@ -93,8 +93,8 @@ CvPoint2D32f* processLKFrame(IplImage* frame,
 		/* automatic initialization */
 		IplImage* eig = cvCreateImage( cvGetSize(grey), 32, 1 );
 		IplImage* temp = cvCreateImage( cvGetSize(grey), 32, 1 );
-		double quality = 0.01;
-		double min_distance = 20;
+		//double quality = 0.01;
+		//double min_distance = 20;
 
 		/* Finds a sparse set of points within the selected region
 		 that seem to be easy to track */

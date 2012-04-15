@@ -9,14 +9,16 @@
 
 #import "LucasKanadeAppDelegate.h"
 #import "AVCamViewController.h"
+#import "HomeController.h"
 #import "AVCamCaptureManager.h"
 #import <AVFoundation/AVFoundation.h>
 
 @implementation LucasKanadeAppDelegate
 
 @synthesize window;
-@synthesize viewController;
+//@synthesize viewController;
 @synthesize navigationController;
+@synthesize homeController;
 
 
 #pragma mark -
@@ -27,10 +29,18 @@
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	
 	[UIApplication sharedApplication].idleTimerDisabled = YES;
-	
+    
+        self.homeController = [[[HomeController alloc] initWithNibName:@"HomeController" bundle:nil] autorelease];
+    self.navigationController = [[[UINavigationController alloc] initWithRootViewController:homeController] autorelease];
+    
+	/*
 	self.viewController = [[[AVCamViewController alloc] initWithNibName:@"AVCamViewController" bundle:nil] autorelease];
+    */
+    /*
+
 	
 	self.navigationController = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
+     */
 	navigationController.navigationBarHidden = YES;
 	
 	[window addSubview:navigationController.view];
@@ -66,9 +76,10 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+    /*
     if ([[[viewController captureManager] session] isRunning] == NO) {
         [[[viewController captureManager] session] startRunning];
-    }    
+    }  */  
 }
 
 
@@ -91,7 +102,8 @@
 
 
 - (void)dealloc {
-    [viewController release];
+    [homeController release];
+    //[viewController release];
     [window release];
 	[navigationController release];
     [super dealloc];

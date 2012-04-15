@@ -9,16 +9,19 @@
 
 #import <UIKit/UIKit.h>
 
-@class AVCamViewController;
+//@class AVCamViewController;
+@class HomeController;
 
 @interface LucasKanadeAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
-    AVCamViewController *viewController;
+    //AVCamViewController *viewController;
+    HomeController *homeController;
 	UINavigationController *navigationController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet AVCamViewController *viewController;
+//@property (nonatomic, retain) IBOutlet AVCamViewController *viewController;
+@property (nonatomic, retain) IBOutlet HomeController *homeController;
 @property (nonatomic, retain) UINavigationController *navigationController;
 
 @end
