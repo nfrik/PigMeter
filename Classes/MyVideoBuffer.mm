@@ -15,7 +15,7 @@
 #import "AVCamViewController.h"
 #import "derivatives.h"
 
-#define MAX_POINTS 10
+#define MAX_POINTS 600
 
 @implementation MyVideoBuffer
 
@@ -56,6 +56,8 @@
         //Alloc 100 3d points where y is distance and x is time;
         cartesianPoints[0] = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));
         cartesianPoints[1] = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));        
+        cartesianPoints[2] = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));        
+        cartesianPoints[3] = (CvPoint3D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint3D32f));                
         alphaPoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
         dalphaPoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));        
         ddalphaPoints = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));                
@@ -67,9 +69,11 @@
         kalmanPoints1 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
         kalmanPoints2 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
         kalmanPoints3 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
-        kalmanPoints4 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));        
+        kalmanPoints4 = (CvPoint2D32f*)cvAlloc(MAX_POINTS*sizeof(CvPoint2D32f));
         memset(xzeroesarr, 0, MAX_POINTS);
         heightLastValue1=0;//zero last value
+        simpsonstorage1=0.0;
+        simpsonstorage2=0.0;
         
         
         //counter to get ~3 secs of data before computations
@@ -322,6 +326,8 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
 	// Calculate FPS
 	fpsAverageAgingFactor = 0.2;
 	framesInSecond++;
+    
+    oldEndTime = endTime;//for instant time delta calculations
 	endTime = [[NSDate date] timeIntervalSince1970];
     
     
@@ -334,6 +340,15 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
     accelerationPoints[pointCounter].y=motionManager.deviceMotion.userAcceleration.y*9.80665;
     accelerationPoints[pointCounter].z=motionManager.deviceMotion.userAcceleration.z*9.80665;
 	//stop taking accelerometer data
+    
+    if ((pointCounter>=2)&&(pointCounter<MAX_POINTS-1)) {
+        kalman3d(accelerationPoints, kfaccelerationPoints, 1e-4, 1e-1, pointCounter+1);
+        simpsonstorage1+=instantsimpson(kfaccelerationPoints[pointCounter-1].z, kfaccelerationPoints[pointCounter].z, kfaccelerationPoints[pointCounter+1].z, (endTime-oldEndTime));
+        simpsonstorage2+=instantsimpson(accelerationPoints[pointCounter-1].z, accelerationPoints[pointCounter].z, accelerationPoints[pointCounter+1].z, (endTime-oldEndTime));        
+        delegate.infoLabel.text=[NSString stringWithFormat:@"vel=%3.2fm, kfvel=%3.2fm, a=%f, kfa=%f",simpsonstorage2, simpsonstorage1, accelerationPoints[pointCounter].z,kfaccelerationPoints[pointCounter].z];
+    }
+    
+    
     
 // ---------------------------------------------------
 // ---------------------------------------------------
@@ -457,55 +472,90 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
     cartesianPoints[0][pointCounter].y = points[0].y;
     cartesianPoints[1][pointCounter].x = points[1].x;
     cartesianPoints[1][pointCounter].y = points[1].y;
+//    cartesianPoints[2][pointCounter].x = points[2].x;
+//    cartesianPoints[2][pointCounter].y = points[2].y;
+//    cartesianPoints[3][pointCounter].x = points[3].x;
+//    cartesianPoints[3][pointCounter].y = points[3].y;
     cartesianPoints[0][pointCounter].z = (endTime-programStartTime)*1000;
     cartesianPoints[1][pointCounter].z = (endTime-programStartTime)*1000;
 
     pointCounter++;
     if (pointCounter>=MAX_POINTS) {
         pointCounter=0;          
+        simpsonstorage1=0;
+        simpsonstorage2=0;        
         pixtoangle(cartesianPoints[0], cartesianPoints[1], alphaPoints, MAX_POINTS);        
         fivepointmidpoint(alphaPoints, dalphaPoints, MAX_POINTS);
         fivepointmidpointdd(alphaPoints, ddalphaPoints, MAX_POINTS);
         kalman2d(alphaPoints, kalmanPoints1, 1e-4, 1e-4, MAX_POINTS);
-        kalman2d(dalphaPoints, kalmanPoints2, 1e-3, 1e-3, MAX_POINTS);
-        kalman2d(ddalphaPoints, kalmanPoints3, 1e-2, 1e-2, MAX_POINTS);
-        kalman3d(accelerationPoints, kfaccelerationPoints, 1e-2, 1e-2, MAX_POINTS);
+        kalman2d(dalphaPoints, kalmanPoints2, 1e-4, 1e-4, MAX_POINTS);
+        kalman2d(ddalphaPoints, kalmanPoints3, 1e-5, 1e-4, MAX_POINTS);
+        kalman3d(accelerationPoints, kfaccelerationPoints, 1e-4, 5e-5, MAX_POINTS);
         inertialpixeltransform(alphaPoints, dalphaPoints, ddalphaPoints, accelerationPoints, distancePoints, MAX_POINTS);
-        inertialpixeltransform(kalmanPoints1, kalmanPoints2, kalmanPoints3, kfaccelerationPoints, kfdistancePoints, MAX_POINTS);
+//        inertialpixeltransform(kalmanPoints1, kalmanPoints2, kalmanPoints3, kfaccelerationPoints, kfdistancePoints, MAX_POINTS);
         //locate zeroes
-        int numofzeroes=locatezeroeswithtolerance(dalphaPoints, xzeroesarr, 0.02, MAX_POINTS);
+        int numofzeroes=locatezeroeswithtolerance(dalphaPoints, xzeroesarr, 0.08, MAX_POINTS);
 
         
-        delegate.infoLabel.text=[NSString stringWithFormat:@"alpha=%3.2f, dx=%3.2f, dy=%3.2f",alphaPoints[0].y*180/M_PI, fabs(cartesianPoints[0][0].x - cartesianPoints[1][0].x),fabs(cartesianPoints[0][0].y - cartesianPoints[1][0].y)];
+        
+        
+        
+        //prepare file                         
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM-dd-HH-mm-ss"];         
+        //prepare file                         
+        [OutData appendFormat:@"%@  %@  %@  %@  %@  %@  %@  %@  %@  %@  %@ \r",@"angle",@"dangle",@"ddangle",@"kfangle",@"dkfangle",@"ddkfangle",@"accel",@"kfaccel",@"distance",@"kfdistance",@"time"];
+        for(int i=1;i<MAX_POINTS;i++){
+            [OutData appendFormat:@"%f  %f  %f  %f  %f  %f  %f  %f  %f  %f  %f \r",alphaPoints[i].y,dalphaPoints[i].y,ddalphaPoints[i].y,kalmanPoints1[i].y,kalmanPoints2[i].y,kalmanPoints3[i].y,accelerationPoints[i].z,kfaccelerationPoints[i].z,distancePoints[i].y,kfdistancePoints[i].y,distancePoints[i].x];
+        }
+        //save file
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
+        if([paths count] > 0){
+            NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"accel0.txt"];
+            [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+            [OutData setString:@""];//clean all array and start with 0 length
+            delegate.infoLabel.text = [NSString stringWithFormat:@"%@ %@",@"file is ready ",[formatter stringFromDate:[NSDate date]]];
+        }               
+        [formatter release];
+        
+        
+        
+//        delegate.infoLabel.text=[NSString stringWithFormat:@"alpha=%3.2f, dx=%3.2f, dy=%3.2f",alphaPoints[0].y*180/M_PI, fabs(cartesianPoints[0][0].x - cartesianPoints[1][0].x),fabs(cartesianPoints[0][0].y - cartesianPoints[1][0].y)];
         
         
      //output if there are actual zeroes
-     if ((numofzeroes>0)&&(numofzeroes<20)) {
-        //prepare file                
-//        for(int i=0;i<MAX_POINTS;i++){
-//            [OutData appendFormat:@"%f  %f  %f  %f  %f  %f  %f  %f  %f\r",alphaPoints[i].y,dalphaPoints[i].y,ddalphaPoints[i].y,kalmanPoints1[i].y,kalmanPoints2[i].y,kalmanPoints3[i].y,accelerationPoints[i].z,kfaccelerationPoints[i].z,distancePoints[i].x];
-//        }
-//            //save file
-//            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
-//            if([paths count] > 0){
-//                NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"adaddakfadkfaddkfaacckfacc.txt"];
-//                [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-//                [OutData setString:@""];//clean all array and start with 0 length
-//                //delegate.infoLabel.text = @"file is ready!";            
-//            }       
+     if ((numofzeroes>0)&&(numofzeroes<MAX_POINTS/2)) {
+         
+//        //prepare file                         
+//         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//         [formatter setDateFormat:@"MM-dd-HH-mm-ss"];         
+//         //prepare file                         
+//         [OutData appendFormat:@"%@  %@  %@  %@  %@  %@  %@  %@  %@  %@  %@ \r",@"angle",@"dangle",@"ddangle",@"kfangle",@"dkfangle",@"ddkfangle",@"accel",@"kfaccel",@"distance",@"kfdistance",@"time"];
+//         for(int i=1;i<MAX_POINTS;i++){
+//             [OutData appendFormat:@"%f  %f  %f  %f  %f  %f  %f  %f  %f  %f  %f \r",alphaPoints[i].y,dalphaPoints[i].y,ddalphaPoints[i].y,kalmanPoints1[i].y,kalmanPoints2[i].y,kalmanPoints3[i].y,accelerationPoints[i].z,kfaccelerationPoints[i].z,distancePoints[i].y,kfdistancePoints[i].y,distancePoints[i].x];
+//         }
+//         //save file
+//         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
+//         if([paths count] > 0){
+//             NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"focus3.txt"];
+//             [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+//             [OutData setString:@""];//clean all array and start with 0 length
+//             // delegate.infoLabel.text = [NSString stringWithFormat:@"%@ %@",@"file is ready ",[formatter stringFromDate:[NSDate date]]];
+//         }               
+//         [formatter release];
          
          
-         // -----------Implement Kalman Filter-----------------    
-         // ---------------------------------------------------    
+         // -----------Implement Kalman Filter on zero points--
+         // ---------------------------------------------------
          float *kalmanZeroPointsInput = (float*)cvAlloc(numofzeroes*sizeof(float));
-         float *kalmanZeroPointsOutput = (float*)cvAlloc(numofzeroes*sizeof(float));                 
+         float *kalmanZeroPointsOutput = (float*)cvAlloc(numofzeroes*sizeof(float));
          
          kalmanZeroPointsInput[0]=heightLastValue1;
          for(int i=1;i<numofzeroes;i++){
              kalmanZeroPointsInput[i]=distancePoints[xzeroesarr[i]].y;
          }         
          
-         kalman1d(kalmanZeroPointsInput, kalmanZeroPointsOutput, 1e-5, 1e-1, numofzeroes);
+         kalman1d(kalmanZeroPointsInput, kalmanZeroPointsOutput, 1e-4, 1e-1, numofzeroes);
              
          //we retrieve last value to connect frames
          heightLastValue1=kalmanZeroPointsOutput[numofzeroes-1];
@@ -516,18 +566,18 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
          
         //prepare file
         for(int i=0;i<numofzeroes;i++){
-            [OutData appendFormat:@"%f %f %f %f %f %f %f \r",alphaPoints[xzeroesarr[i]].y,dalphaPoints[xzeroesarr[i]].y,ddalphaPoints[xzeroesarr[i]].y,distancePoints[xzeroesarr[i]].y,kfdistancePoints[xzeroesarr[i]].y, kalmanZeroPointsOutput[i],distancePoints[xzeroesarr[i]].x];
+            //[OutData appendFormat:@"%f %f %f %f %f %f %f \r",alphaPoints[xzeroesarr[i]].y,dalphaPoints[xzeroesarr[i]].y,ddalphaPoints[xzeroesarr[i]].y,distancePoints[xzeroesarr[i]].y,kfdistancePoints[xzeroesarr[i]].y, kalmanZeroPointsOutput[i],distancePoints[xzeroesarr[i]].x];
              kf+=fabs(kalmanZeroPointsOutput[i]);            
         }
 
-         //save file
-         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);        
-         if([paths count] > 0){
-             NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"kfproc1e5meas1e1.txt"];
-             [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
-             [OutData setString:@""];//clean all array and start with 0 length
-             //delegate.infoLabel.text = @"file is ready!";            
-         }         
+//         //save file zero points only
+//         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//         if([paths count] > 0){
+//             NSString *dataPath =[[paths objectAtIndex:0] stringByAppendingPathComponent:@"kfproc1e5meas1e1.txt"];
+//             [OutData writeToFile:dataPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+//             [OutData setString:@""];//clean all array and start with 0 length
+//             //delegate.infoLabel.text = @"file is ready!";            
+//         }         
          
          
          cvFree(&kalmanZeroPointsInput);
@@ -541,7 +591,7 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
          //float kfavRealDistance = averageforpoints(kfdistancePoints, xzeroesarr, numofzeroes);    
          
          
-//         delegate.infoLabel.text=[NSString stringWithFormat:@"RD=%3.2fm, KFD=%3.2fm, n=%d, a=%f",avRealDistance, kf/numofzeroes, numofzeroes, accelerationPoints[0].z];
+    //     delegate.infoLabel.text=[NSString stringWithFormat:@"RD=%3.2fm, KFD=%3.2fm, n=%d, a=%f",avRealDistance, kf/numofzeroes, numofzeroes, accelerationPoints[0].z];
          
          
             
@@ -642,6 +692,8 @@ static CGFloat trailColorBuffer[MAX_CORNERS * TRAIL_LENGTH * 4];
     [OutData release];
     cvFree(&cartesianPoints[0]);
     cvFree(&cartesianPoints[1]);    
+    cvFree(&cartesianPoints[2]);
+    cvFree(&cartesianPoints[3]);        
     cvFree(&alphaPoints);    
     cvFree(&dalphaPoints);
     cvFree(&ddalphaPoints);

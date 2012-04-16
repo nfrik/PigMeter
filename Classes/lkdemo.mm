@@ -117,10 +117,10 @@ CvPoint2D32f* processLKFrame(IplImage* frame,
         points[1][0].y=p1y;
         points[1][1].x=p2x;
         points[1][1].y=p2y;        
-//        points[1][2].x=p3x;
-//        points[1][2].y=p3y;
-//        points[1][3].x=p4x;
-//        points[1][3].y=p4y;        
+        points[1][2].x=p3x;
+        points[1][2].y=p3y;
+        points[1][3].x=p4x;
+        points[1][3].y=p4y;        
         lkcount=2;
     
         
@@ -191,7 +191,7 @@ CvPoint2D32f* processLKFrame(IplImage* frame,
 		// Calc movement of tracked points
 		cvCalcOpticalFlowPyrLK( prev_grey, grey, prev_pyramid, pyramid,
 			points[0], points[1], lkcount, cvSize(win_size,win_size), level, status, 0,
-			cvTermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS,30,0.01), flags );
+			cvTermCriteria(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS,20,0.03), flags );
 		flags |= CV_LKFLOW_PYR_A_READY;
 		for( i = k = 0; i < lkcount; i++ )
 		{

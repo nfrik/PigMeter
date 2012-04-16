@@ -45,4 +45,15 @@ float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size);
 //getting average of an array
 float average(CvPoint2D32f * input, int which, int size);
 
+//simpson's rule for integration
+double simpson(CvPoint2D32f * input, int n0, int n1);
+
+//simpson's rule for integration
+double simpson(CvPoint2D32f * input, int n);
+
+//instant simpson's rule for integration
+double instantsimpson(float f0, float f1, float f2, float dx);
+
+
+
 #endif

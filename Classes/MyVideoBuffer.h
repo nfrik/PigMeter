@@ -32,7 +32,7 @@
 	CvPoint2D32f* points;
     
     //my variables
-    CvPoint3D32f* cartesianPoints[2]; //2 arrays for two set of cartesian points
+    CvPoint3D32f* cartesianPoints[4]; //2 arrays for two set of cartesian points
     CvPoint2D32f* alphaPoints;
     CvPoint2D32f* dalphaPoints;
     CvPoint2D32f* ddalphaPoints;
@@ -47,6 +47,9 @@
     float         heightLastValue1; //we save last value to make smooth kalman prediction from last frame
              int* xzeroesarr;
     double        programStartTime;
+    double        oldEndTime;
+    double        simpsonstorage1;
+    double        simpsonstorage2;    
     NSMutableString* OutData;
     
     CMMotionManager* motionManager;

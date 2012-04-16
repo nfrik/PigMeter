@@ -41,23 +41,23 @@
         NSLog(@"x:%f y:%f",tapPoint.x,tapPoint.y);
         switch (pointnumber) {
             case 0:p1x=tapPoint.y/self.frame.size.height*320;
-                   p1y=(1-tapPoint.x/self.frame.size.width)*210;
+                   p1y=(1-tapPoint.x/self.frame.size.width)*215;
                    pointnumber++;
                    break;
             case 1:p2x=tapPoint.y/self.frame.size.height*320;
-                   p2y=(1-tapPoint.x/self.frame.size.width)*210;
+                   p2y=(1-tapPoint.x/self.frame.size.width)*215;
                    pointnumber++;
                    break;
-//          case 2:p3x=tapPoint.y/self.frame.size.height*320;
-//                 p3y=(1-tapPoint.x/self.frame.size.width)*200;
-//                 pointnumber++;
-//                 break;
-//          case 3:p4x=tapPoint.y/self.frame.size.height*320;
-//                 p4y=(1-tapPoint.x/self.frame.size.width)*200;
-//                 pointnumber++;
-//                 break;                        
-            default:
-                break;
+            case 2:p3x=tapPoint.y/self.frame.size.height*320;
+                   p3y=(1-tapPoint.x/self.frame.size.width)*215;
+                   pointnumber++;
+                   break;
+            case 3:p4x=tapPoint.y/self.frame.size.height*320;
+                   p4y=(1-tapPoint.x/self.frame.size.width)*215;
+                   pointnumber++;
+                   break;                        
+           default:
+                   break;
         }
         if(pointnumber==MAX_POINT_NUMBER)
             pointnumber=0;

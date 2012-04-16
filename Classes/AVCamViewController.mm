@@ -93,6 +93,7 @@ const CGFloat hudBorderWidth = 1.f;
 @synthesize displayMethodParam;
 @synthesize showCameraParam;
 @dynamic usingBackFacingCamera;
+@synthesize timer;
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
@@ -511,13 +512,19 @@ const CGFloat hudBorderWidth = 1.f;
 {
     switch ([(ExpandyButton *)sender selectedItem]) {
         case 0:
+            [self stopTimer];
             [[self captureManager] setFocusMode:AVCaptureFocusModeLocked];
             break;
         case 1:
+            [self stopTimer];
             [[self captureManager] setFocusMode:AVCaptureFocusModeAutoFocus];
             break;
         case 2:
+            [self stopTimer];            
             [[self captureManager] setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+            break;
+        case 3:
+            [self startTimer];
             break;
     }
 }
@@ -762,7 +769,7 @@ const CGFloat hudBorderWidth = 1.f;
             if (expandyButton == nil) {
                 ExpandyButton *focus =  [[ExpandyButton alloc] initWithPoint:CGPointMake(8.f, 8.f + (40.f * count))
                                                                        title:@"Focus"
-                                                                 buttonNames:[NSArray arrayWithObjects:@"Lock",@"Auto",@"Cont",nil]
+                                                                 buttonNames:[NSArray arrayWithObjects:@"Lock",@"Auto",@"Cont",@"Periodic",nil]
                                                                 selectedItem:[[self captureManager ] focusMode]];
                 [focus addTarget:self action:@selector(focusChange:) forControlEvents:UIControlEventValueChanged];
                 [view addSubview:focus];
@@ -1053,6 +1060,23 @@ const CGFloat hudBorderWidth = 1.f;
 }
 
 
+#pragma mark timer Actions
+-(void)startTimer{
+    timer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(timerMethod:) userInfo:nil repeats:YES];    
+}
+
+-(void)stopTimer{
+    [[self timer] invalidate];
+    timer=nil;
+}
+
+-(void)timerMethod:(NSTimer *)theTimer{
+    if ([[self captureManager] focusMode]==AVCaptureFocusModeLocked)
+       [[self captureManager] setFocusMode:AVCaptureFocusModeAutoFocus];
+    else
+       [[self captureManager] setFocusMode:AVCaptureFocusModeLocked];
+    
+}
 
 
 @end

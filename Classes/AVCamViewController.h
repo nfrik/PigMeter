@@ -65,6 +65,8 @@
     CALayer *_focusBox;
     CALayer *_exposeBox;    
     
+    NSTimer *timer; // to change focus
+    
     // Touch controller
     AVCamTouchController* touchController;
 }
@@ -105,6 +107,8 @@
 
 @property (nonatomic,retain) IBOutlet UIView *statView;
 
+@property (nonatomic,retain) NSTimer *timer;
+
 #pragma mark Toolbar Actions
 - (IBAction)hudViewToggle:(id)sender;
 - (IBAction)still:(id)sender;
@@ -116,5 +120,12 @@
 
 #pragma mark HUD Actions
 - (void)presetChange:(id)sender;
+
+
+#pragma mark timer Actions
+-(void)startTimer;
+-(void)stopTimer;
+-(void)timerMethod:(NSTimer *)theTimer;
+
 @end
 

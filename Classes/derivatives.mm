@@ -66,13 +66,16 @@ void threepointmidpointdd(CvPoint2D32f * input, CvPoint2D32f * output, int size)
 void pixtoangle(CvPoint3D32f * points1, CvPoint3D32f * points2, CvPoint2D32f * anglesout, int size){
     float aw,ah;
     for(int i=0;i<size;i++){
-        ah = atanf(sqrt(pow(points2[i].x-points1[i].x,2))/320*tan((53.13/180*M_PI)/2.0));
-        aw = atanf(sqrt(pow(points2[i].y-points1[i].y,2))/215*tan((36.8/180*M_PI)/2.0));        
+        //--------camera focus destabilizes the measurement---
+        //--------vertical:~55.7 (old value 53.13)------------
+        //--------horizontal:~39.0 (old value 36.8)-----------
+        //----------------------------------------------------
+        ah = atanf(sqrt(pow(points2[i].x-points1[i].x,2))/320*tan((55.7/180*M_PI)/2.0));
+        aw = atanf(sqrt(pow(points2[i].y-points1[i].y,2))/215*tan((39.0/180*M_PI)/2.0));
 //        anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2)+pow(points2[i].y-points1[i].y,2))/320*tan((55.7/180*M_PI)/2.0));
+//        anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2))/320*tan((55.7/180*M_PI)/2.0));
           anglesout[i].y = 2*atanf(sqrtf(powf(ah, 2)+powf(aw, 2)));
           anglesout[i].x = points1[i].z;
-//        anglesout[i].y = aw;
-//        anglesout[i].x = ah;
         
     }
 }
@@ -132,4 +135,46 @@ float average(CvPoint2D32f * input, int which, int size){
         }
     }
     return accum/size;
+}
+
+/*==============================================================
+ Numerical integration of f(x) on [a,b]
+ method: Simpson rule
+ written by: Alex Godunov (February 2007)
+ ----------------------------------------------------------------
+ input:
+ f   - a single argument real function (supplied by the user)
+ a,b - the two end-points of the interval of integration
+ n   - number of intervals
+ output:
+ s - result of integration
+ ================================================================*/
+
+double simpson(CvPoint2D32f * input, int n0, int n1)
+{
+    double s,dx;
+    int n=n1-n0+1;
+    // if n is odd - add +1 interval to make it even
+    if((n/2)*2 != n) {n=n+1;}
+    s = 0.0;
+    for ( int i=2; i<=n-1; i=i+2)
+    {
+        dx=input[n0].x-input[n0+1].x;
+        s = s + (2.0*input[i].y + 4.0*input[i+1].y)*dx/3.0;
+    }
+    dx=input[n0].x-input[n0+1].x;
+    s = s + (input[n0].y+input[n1].y+4.0*input[n0+1].y)*dx/3.0;
+    return s;
+}
+
+
+//simpson's rule for integration
+double simpson(CvPoint2D32f * input, int n){
+    return (input[n-1].y+4.0*input[n].y+input[n+1].y)*(input[n].x-input[n-1].x)/3.0;
+}
+
+
+//instant simpson's rule for integration
+double instantsimpson(float f0, float f1, float f2, float dx){
+    return (double)(f0+4.0*f1+f2)*dx/3.0;
 }
