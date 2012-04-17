@@ -30,6 +30,16 @@ void threepointmidpointdd(CvPoint2D32f * input, CvPoint2D32f * output, int size)
 //       2) assuming perfect timing btw acceleration and point distance
 void pixtoangle(CvPoint3D32f * points1, CvPoint3D32f * points2, CvPoint2D32f * anglesout, int size);
 
+
+//test function to calculate angle of the point
+float ppvisangl(float y, float pitch);
+
+//distance
+float getdistance(float h, float alpha);
+
+//height
+float getheight(float h, float d,float alpha);
+
 //calculate actual distance taking pixel data, transforming to meters
 void inertialpixeltransform(CvPoint2D32f * alpha, CvPoint2D32f * dalpha, CvPoint2D32f * ddalpha, CvPoint3D32f * acceleration, CvPoint2D32f * meterdistout, int size);
 
@@ -45,8 +55,17 @@ float averageforpoints(CvPoint2D32f * input, int * xzeroes, int size);
 //getting average of an array
 float average(CvPoint2D32f * input, int which, int size);
 
+//set zero
+void settozero(CvPoint2D32f * input, int size);
+
+//set zero overloaded
+void settozero(CvPoint3D32f * input, int size);
+
 //simpson's rule for integration
 double simpson(CvPoint2D32f * input, int n0, int n1);
+
+//simpson's rule for integration with timeline value
+void simpson(CvPoint3D32f * input, CvPoint2D32f * output, CvPoint2D32f * time, int n0, int n1);
 
 //simpson's rule for integration
 double simpson(CvPoint2D32f * input, int n);

@@ -75,9 +75,25 @@ void pixtoangle(CvPoint3D32f * points1, CvPoint3D32f * points2, CvPoint2D32f * a
 //        anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2)+pow(points2[i].y-points1[i].y,2))/320*tan((55.7/180*M_PI)/2.0));
 //        anglesout[i].y = 2*atan(sqrt(pow(points2[i].x-points1[i].x,2))/320*tan((55.7/180*M_PI)/2.0));
           anglesout[i].y = 2*atanf(sqrtf(powf(ah, 2)+powf(aw, 2)));
-          anglesout[i].x = points1[i].z;
-        
+          anglesout[i].x = points1[i].z;        
     }
+}
+
+//test function to calculate angle of the point
+float ppvisangl(float y, float pitch){
+    float ah;
+    ah = 2*atanf((320-y)/320*tan(55.7/180*M_PI_2)) + pitch - 55.7*M_PI_2/180;    
+    return ah;
+}
+
+//distance
+float getdistance(float h, float alpha){
+    return h*tanf(alpha);
+}
+
+//height
+float getheight(float h, float d,float alpha){
+    return h-d*tanf(alpha);
 }
 
 //calculate actual distance taking pixel data, transforming to meters
@@ -137,6 +153,24 @@ float average(CvPoint2D32f * input, int which, int size){
     return accum/size;
 }
 
+
+//set zero
+void settozero(CvPoint2D32f * input, int size){
+    for (int i=0; i<size; i++) {
+        input[i].x=0;
+        input[i].y=0;
+    }
+}
+
+//set zero overloaded
+void settozero(CvPoint3D32f * input, int size){
+    for (int i=0; i<size; i++) {
+        input[i].x=0;
+        input[i].y=0;
+        input[i].z=0;        
+    }    
+}
+
 /*==============================================================
  Numerical integration of f(x) on [a,b]
  method: Simpson rule
@@ -165,6 +199,25 @@ double simpson(CvPoint2D32f * input, int n0, int n1)
     dx=input[n0].x-input[n0+1].x;
     s = s + (input[n0].y+input[n1].y+4.0*input[n0+1].y)*dx/3.0;
     return s;
+}
+
+
+//simpson's rule for integration with timeline value for acceleration in z direction
+void simpson(CvPoint3D32f * input, CvPoint2D32f * output , CvPoint2D32f *time, int n0, int n1){
+    double s,dx;
+    int n=n1-n0+1;
+    // if n is odd - add +1 interval to make it even
+    if((n/2)*2 != n) {n=n+1;}
+    s = 0.0;
+    for ( int i=2; i<=n-1; i=i+2)
+    {
+        dx=time[n0].x-time[n0+1].x;
+        s = s + (2.0*input[i].y + 4.0*input[i+1].y)*dx/3.0;
+        output[i].y=(float)s;
+    }
+    dx=time[n0].x-time[n0+1].x;
+    s = s + (input[n0].y+input[n1].y+4.0*input[n0+1].y)*dx/3.0;
+    output[n1].y=s;
 }
 
 
